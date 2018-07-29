@@ -1,0 +1,55 @@
+import java.awt.event.ActionEvent;
+
+public class Player extends GameCharacter
+{
+
+    private int statPoints;
+
+    public Player (String name, int maxHealth, Weapon weapon)
+    {
+        super(name, maxHealth, weapon, 0, 1.0);
+        statPoints = 5;
+    }
+
+    public String toString ()
+    {
+        String toString;
+        toString = String.format("Name: %s", super.getName());
+        System.out.println(toString);
+        return toString;
+    }
+
+    public int getStatPoints ()
+    {
+        return statPoints;
+    }
+
+    public void setStatPoints (int statPoints)
+    {
+        this.statPoints = statPoints;
+    }
+
+
+    public void upgradeManager(UpgradeType upgradeType)
+    {
+        if (upgradeType == UpgradeType.HEALTH)
+        {
+            upgradeHealth();
+        }
+        else if (upgradeType == UpgradeType.DAMAGE)
+        {
+            upgradeDamage();
+        }
+        statPoints --;
+    }
+
+    private void upgradeHealth()
+    {
+        setMaxhealth(getMaxhealth() + 25);
+    }
+
+    private void upgradeDamage()
+    {
+        setDamageMultiplier(getDamageMultiplier() + .2);
+    }
+}
