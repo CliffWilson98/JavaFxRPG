@@ -4,11 +4,13 @@ public class Player extends GameCharacter
 {
 
     private int statPoints;
+    private int healAmount;
 
     public Player (String name, int maxHealth, Weapon weapon)
     {
         super(name, maxHealth, weapon, 0, 1.0);
         statPoints = 5;
+        healAmount = 10;
     }
 
     public String toString ()
@@ -51,5 +53,15 @@ public class Player extends GameCharacter
     private void upgradeDamage()
     {
         setDamageMultiplier(getDamageMultiplier() + .2);
+    }
+
+    public void setHealAmount(int healAmount)
+    {
+        this.healAmount = healAmount;
+    }
+
+    public int getHealAmount()
+    {
+        return healAmount;
     }
 }

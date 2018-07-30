@@ -4,7 +4,7 @@ public class Combat
     private Combat (){}
 
 
-    public static void attack (Player player, GameCharacter monster)
+    private static void attack (Player player, GameCharacter monster)
     {
         int monsterDamage = (int)calculateDamage(monster);
         int playerDamage = (int)calculateDamage(monster);
@@ -21,6 +21,25 @@ public class Combat
         double damage = character.getDamageMultiplier() * (weapon.getMaximumDamage() - weapon.getMinimumDamage());
         double randomDamage = (Math.random() * damage) + weapon.getMinimumDamage();
         return randomDamage;
+    }
+
+    private static void heal (Player player, GameCharacter monster)
+    {
+        int monsterDamage = (int)calculateDamage(monster);
+        player.takeDamage(monsterDamage - player.getHealAmount());
+    }
+
+    public static void combatManager (Player player, GameCharacter monster, AttackType type, Game game)
+    {
+        if(type == AttackType.ATTACK)
+        {
+            attack(player, monster);
+        }
+        else if(type == AttackType.HEAL)
+        {
+            heal(player, monster);
+        }
+        game.updateCombatSceneText();
     }
 
 

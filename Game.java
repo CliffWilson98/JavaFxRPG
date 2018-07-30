@@ -15,6 +15,8 @@ public class Game extends Application implements EventHandler<ActionEvent>
 {
     private Player player;
     private WeaponsHolder weaponsHolder = WeaponsHolder.getInstance();
+    private MonsterHolder monsterHolder = MonsterHolder.getInstance();
+    private GameCharacter monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0);
 
     private Font labelFont = new Font("Times New Roman", 32);
 
@@ -149,17 +151,23 @@ public class Game extends Application implements EventHandler<ActionEvent>
         combatGridPane.setAlignment(Pos.TOP_CENTER);
 
         Label combatLabel = new Label("While adventuring you run into a fearsome foe!");
-        playerAttackLabel = new Label("Placeholder text");
+        playerAttackLabel = new Label();
         enemyAttackLabel = new Label("Placeholder text");
+
+        updateCombatSceneText();
 
         combatGridPane.add(combatLabel,0,0);
         combatGridPane.add(playerAttackLabel,0,1);
         combatGridPane.add(enemyAttackLabel,0,2);
 
         attackButton = new Button("Attack");
+        attackButton.setOnAction(this);
         healButton = new Button("Heal");
+        healButton.setOnAction(this);
         magicButton = new Button("Cast Spell");
+        magicButton.setOnAction(this);
         fleeButton = new Button("Flee");
+        fleeButton.setOnAction(this);
 
         GridPane combatButtonPane = new GridPane();
         combatButtonPane.setVgap(10);
@@ -171,31 +179,14 @@ public class Game extends Application implements EventHandler<ActionEvent>
         combatButtonPane.add(magicButton,1,0);
         combatButtonPane.add(fleeButton,1,1);
 
-        combatGridPane.add(combatButtonPane,0,3);
+        GridPane combatWrapper = new GridPane();
+        combatWrapper.setAlignment(Pos.CENTER);
+        combatWrapper.setVgap(200);
+        combatWrapper.add(combatGridPane,0,0);
+        combatWrapper.add(combatButtonPane,0,1);
 
-        combatScene = new Scene(combatGridPane,800,600);
+        combatScene = new Scene(combatWrapper,800,600);
         combatScene.getStylesheets().add("Style.css");
-    }
-
-    public void handle(ActionEvent event)
-    {
-        if (event.getSource() == startButton)
-        {
-            System.out.println("button was pressed");
-            stage.setScene(upgradeScene);
-        }
-        if (event.getSource() == healthUpgradeButton)
-        {
-            upgradeSceneManager(UpgradeType.HEALTH);
-        }
-        if (event.getSource() == damageUpgradeButton)
-        {
-            upgradeSceneManager(UpgradeType.DAMAGE);
-        }
-        if (event.getSource() == adventureButton)
-        {
-            stage.setScene(combatScene);
-        }
     }
 
     public void upgradeSceneManager(UpgradeType upgradeType)
@@ -213,5 +204,44 @@ public class Game extends Application implements EventHandler<ActionEvent>
         String upgradeText = String.format("UPGRADE YOUR HERO\nPlayer Name: %s\nHealth: %d\nDamage Multiplier: %f\nPoints Remaining: %d",
                 player.getName(), player.getMaxhealth(), player.getDamageMultiplier(), player.getStatPoints());
         upgradeLabel.setText(upgradeText);
+    }
+
+    public void updateCombatSceneText()
+    {
+        String labelText = String.format("PLAYER HP: %d\tAVG-DMG: %f", player.getCurrentHealth(), (player.getDamageMultiplier() * player.getWeapon().getAverageDamage()));
+        playerAttackLabel.setText(labelText);
+        labelText = String.format("ENEMY HP: %d\tAVG-DMG: %f", monster.getCurrentHealth(), (monster.getDamageMultiplier() * monster.getWeapon().getAverageDamage()));
+        enemyAttackLabel.setText(labelText);
+    }
+
+    public void handle(ActionEvent event)
+    {
+        if (event.getSource() == startButton)
+        {
+            System.out.println("button was pressed");
+            stage.setScene(upgradeScene);
+        }
+        if(stage.getScene() == upgradeScene)
+        {
+            if (event.getSource() == healthUpgradeButton) {
+                upgradeSceneManager(UpgradeType.HEALTH);
+            }
+            if (event.getSource() == damageUpgradeButton) {
+                upgradeSceneManager(UpgradeType.DAMAGE);
+            }
+        }
+        if (event.getSource() == adventureButton)
+        {
+            stage.setScene(combatScene);
+            monster = monsterHolder.getRandomCommonMonster();
+            updateCombatSceneText();
+        }
+        if (stage.getScene() == combatScene)
+        {
+            if (event.getSource() == attackButton)
+            {
+                Combat.combatManager(player, monster, AttackType.ATTACK, this);
+            }
+        }
     }
 }

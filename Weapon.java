@@ -36,6 +36,6 @@ public class Weapon
 		return minimumDamage;
 	}
 	
-	
+	public int getAverageDamage (){return (maximumDamage + minimumDamage)/2;}
 	
 }
