@@ -16,22 +16,22 @@ public class Game extends Application implements EventHandler<ActionEvent>
     private Player player;
     private WeaponsHolder weaponsHolder = WeaponsHolder.getInstance();
     private MonsterHolder monsterHolder = MonsterHolder.getInstance();
-    private GameCharacter monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0);
+    private GameCharacter monster;
 
     private Font labelFont = new Font("Times New Roman", 32);
 
     private Stage stage;
 
-    private GridPane titleGridpane, mainMenuGridPane, upgradeGridPane, combatGridPane;
+    private GridPane titleGridpane, mainMenuGridPane, upgradeGridPane, combatGridPane, postCombatGridPane;
 
-    private Scene titleScene, mainMenuScene, upgradeScene, combatScene;
+    private Scene titleScene, mainMenuScene, upgradeScene, combatScene, postCombatScene;
 
     private Button startButton;
     private Button healthUpgradeButton, damageUpgradeButton;
     private Button adventureButton, shopButton, statsButton, zoneChangeButton;
     private Button attackButton, healButton, magicButton, fleeButton;
 
-    private Label upgradeLabel, playerAttackLabel, enemyAttackLabel;
+    private Label upgradeLabel, playerAttackLabel, enemyAttackLabel, postCombatLabel;
 
     public static void main(String[] args)
     {
@@ -39,24 +39,28 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
     }
 
+    //Initializing all necessary components for the game
     public void start(Stage primaryStage)
     {
         player = new Player("Brave Hero", 200, weaponsHolder.getRandomCommonWeapon());
+        monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0);
 
         stage = primaryStage;
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setTitle("RPG GAME");
 
         setUpTitleScreen();
         setUpMainMenu();
         setUpCharacterUpgradeScreen();
         setUpCombatScreen();
+        setUpPostCombatScreen();
 
         stage.setScene(titleScene);
 
         stage.show();
     }
 
+    //Methods to set up each screen
     private void setUpTitleScreen()
     {
         titleGridpane = new GridPane();
@@ -82,7 +86,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
     {
         mainMenuGridPane = new GridPane();
         mainMenuGridPane.setPadding(new Insets(25,25,25,25));
-        mainMenuGridPane.setVgap(250);
+        mainMenuGridPane.setVgap(100);
         mainMenuGridPane.setAlignment(Pos.TOP_CENTER);
 
         String mainMenuText = "You are resting at a campfire. What do you wish to do?";
@@ -121,7 +125,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
         upgradeGridPane = new GridPane();
         upgradeGridPane.setPadding(new Insets(25,25,25,25));
-        upgradeGridPane.setVgap(250);
+        upgradeGridPane.setVgap(100);
         upgradeGridPane.setAlignment(Pos.TOP_CENTER);
 
         upgradeGridPane.add(upgradeLabel,0,0);
@@ -156,9 +160,10 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
         updateCombatSceneText();
 
-        combatGridPane.add(combatLabel,0,0);
+        //combatGridPane.add(combatLabel,1,0);
         combatGridPane.add(playerAttackLabel,0,1);
-        combatGridPane.add(enemyAttackLabel,0,2);
+        combatGridPane.add(enemyAttackLabel,1,1);
+        System.out.println(combatGridPane.hgapProperty());
 
         attackButton = new Button("Attack");
         attackButton.setOnAction(this);
@@ -181,12 +186,31 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
         GridPane combatWrapper = new GridPane();
         combatWrapper.setAlignment(Pos.CENTER);
-        combatWrapper.setVgap(200);
+        combatWrapper.setVgap(100);
         combatWrapper.add(combatGridPane,0,0);
         combatWrapper.add(combatButtonPane,0,1);
 
         combatScene = new Scene(combatWrapper,800,600);
         combatScene.getStylesheets().add("Style.css");
+    }
+
+    //Screen to provide a summary of all combat encounters
+    private void setUpPostCombatScreen()
+    {
+        postCombatGridPane = new GridPane();
+        postCombatGridPane.setAlignment(Pos.CENTER);
+
+        postCombatLabel = new Label("Placeholder Text");
+
+        Button continueButton = new Button("Continue");
+
+        postCombatGridPane.add(postCombatLabel,0,0);
+        postCombatGridPane.add(continueButton,0,1);
+
+        postCombatScene = new Scene(postCombatGridPane, 800, 600);
+        postCombatScene.getStylesheets().add("Style.css");
+
+
     }
 
     public void upgradeSceneManager(UpgradeType upgradeType)
@@ -199,21 +223,28 @@ public class Game extends Application implements EventHandler<ActionEvent>
         }
     }
 
+    //Methods to update text after a change has been made
     private void updateUpgradeSceneText()
     {
-        String upgradeText = String.format("UPGRADE YOUR HERO\nPlayer Name: %s\nHealth: %d\nDamage Multiplier: %f\nPoints Remaining: %d",
+        String upgradeText = String.format("UPGRADE YOUR HERO\nPlayer Name: %s\nHealth: %d\nDamage Multiplier: %.1f\nPoints Remaining: %d",
                 player.getName(), player.getMaxhealth(), player.getDamageMultiplier(), player.getStatPoints());
         upgradeLabel.setText(upgradeText);
     }
 
     public void updateCombatSceneText()
     {
-        String labelText = String.format("PLAYER HP: %d\tAVG-DMG: %f", player.getCurrentHealth(), (player.getDamageMultiplier() * player.getWeapon().getAverageDamage()));
+        String labelText = String.format("%s\nHP: %d\nAVG-DMG: %.1f", player.getName(), player.getCurrentHealth(), (player.getDamageMultiplier() * player.getWeapon().getAverageDamage()));
         playerAttackLabel.setText(labelText);
-        labelText = String.format("ENEMY HP: %d\tAVG-DMG: %f", monster.getCurrentHealth(), (monster.getDamageMultiplier() * monster.getWeapon().getAverageDamage()));
+        labelText = String.format("%s\nHP: %d\nAVG-DMG: %.1f", monster.getName(), monster.getCurrentHealth(), (monster.getDamageMultiplier() * monster.getWeapon().getAverageDamage()));
         enemyAttackLabel.setText(labelText);
     }
 
+    public void updatePostCombatSceneText(String text)
+    {
+        postCombatLabel.setText(text);
+    }
+
+    //Event handler for every button in the game
     public void handle(ActionEvent event)
     {
         if (event.getSource() == startButton)
@@ -232,15 +263,19 @@ public class Game extends Application implements EventHandler<ActionEvent>
         }
         if (event.getSource() == adventureButton)
         {
-            stage.setScene(combatScene);
             monster = monsterHolder.getRandomCommonMonster();
             updateCombatSceneText();
+            stage.setScene(combatScene);
         }
         if (stage.getScene() == combatScene)
         {
             if (event.getSource() == attackButton)
             {
-                Combat.combatManager(player, monster, AttackType.ATTACK, this);
+                Combat.combatManager(player, monster, AttackType.ATTACK, this, stage, postCombatScene);
+            }
+            if (event.getSource() == healButton)
+            {
+                Combat.combatManager(player, monster, AttackType.HEAL, this, stage, postCombatScene);
             }
         }
     }

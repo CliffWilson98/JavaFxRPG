@@ -1,3 +1,4 @@
+//Class to model the player and all enemies.
 public class GameCharacter
 {
 
@@ -16,6 +17,7 @@ public class GameCharacter
         this.currentHealth = maxHealth;
 		this.weapon = weapon;
 		this.damageMultiplier = damageMultiplier;
+		this.gold = gold;
     }
 
     public String getName ()

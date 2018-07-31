@@ -1,3 +1,4 @@
+//Models an individual weapon. The weapon will be stored in the weapons holder class.
 public class Weapon
 {
 	private int minimumDamage;

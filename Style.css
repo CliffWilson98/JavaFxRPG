@@ -1,0 +1,10 @@
+/*Simple CSS styling*/
+.button{
+    -fx-font: 20px "Times New Roman";
+    -fx-padding: 10;
+}
+
+.label{
+     -fx-font: 26px "Times New Roman";
+     -fx-padding: 10;
+}

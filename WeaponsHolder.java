@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-//MUST USE SINGLETON STRATEGY
+//Class which holds every weapon in the game. Identical in concept to the MonsterHolder class
 public class WeaponsHolder
 {
     private static WeaponsHolder instance = new WeaponsHolder();
@@ -14,11 +14,11 @@ public class WeaponsHolder
     private WeaponsHolder()
     {
         commonWeaponsHolder = new ArrayList<Weapon>();
-        commonWeapon1 = new Weapon("Common Hammer", 2, 5);
+        commonWeapon1 = new Weapon("Common Hammer", 4, 7);
         commonWeaponsHolder.add(commonWeapon1);
-        commonWeapon2 = new Weapon("Common Sword", 2, 4);
+        commonWeapon2 = new Weapon("Common Sword", 4, 6);
         commonWeaponsHolder.add(commonWeapon2);
-        commonWeapon3 = new Weapon("Common Cestus", 1, 3);
+        commonWeapon3 = new Weapon("Common Cestus", 3, 5);
         commonWeaponsHolder.add(commonWeapon3);
 
     }

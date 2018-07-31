@@ -1,5 +1,4 @@
-import java.awt.event.ActionEvent;
-
+//More specialized class to model the player. Extends the GameCharacter class
 public class Player extends GameCharacter
 {
 
@@ -8,7 +7,7 @@ public class Player extends GameCharacter
 
     public Player (String name, int maxHealth, Weapon weapon)
     {
-        super(name, maxHealth, weapon, 0, 1.0);
+        super(name, maxHealth, weapon, 0, 3);
         statPoints = 5;
         healAmount = 10;
     }
