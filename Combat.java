@@ -45,7 +45,7 @@ public class Combat
         }
         else
         {
-            combatSummary = "You killed the monster";
+            combatSummary = String.format("You have killed the %s", monster.getName());
         }
         
         return combatSummary;
