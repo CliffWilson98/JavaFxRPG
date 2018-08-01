@@ -24,14 +24,16 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
     private GridPane titleGridpane, mainMenuGridPane, upgradeGridPane, combatGridPane, postCombatGridPane;
 
-    private Scene titleScene, mainMenuScene, upgradeScene, combatScene, postCombatScene;
+    private Scene titleScene, mainMenuScene, upgradeScene, combatScene, postCombatScene, statsScene;
 
     private Button startButton;
     private Button healthUpgradeButton, damageUpgradeButton;
     private Button adventureButton, shopButton, statsButton, zoneChangeButton;
     private Button attackButton, healButton, magicButton, fleeButton;
+    private Button continueButton;
+    private Button statsContinueButton;
 
-    private Label upgradeLabel, playerAttackLabel, enemyAttackLabel, postCombatLabel;
+    private Label upgradeLabel, playerAttackLabel, enemyAttackLabel, postCombatLabel, statsLabel;
 
     public static void main(String[] args)
     {
@@ -43,7 +45,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
     public void start(Stage primaryStage)
     {
         player = new Player("Brave Hero", 200, weaponsHolder.getRandomCommonWeapon());
-        monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0);
+        monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0, 0);
 
         stage = primaryStage;
         stage.setResizable(true);
@@ -54,6 +56,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
         setUpCharacterUpgradeScreen();
         setUpCombatScreen();
         setUpPostCombatScreen();
+        setUpStatsScreen();
 
         stage.setScene(titleScene);
 
@@ -105,6 +108,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
         adventureButton.setOnAction(this);
         shopButton = new Button("Shop");
         statsButton = new Button("View Stats");
+        statsButton.setOnAction(this);
         zoneChangeButton = new Button("Change Zone");
 
         mainMenuButtonPane.add(adventureButton,0,0);
@@ -149,7 +153,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
     }
 
-    private void setUpCombatScreen ()
+    private void setUpCombatScreen()
     {
         combatGridPane = new GridPane();
         combatGridPane.setAlignment(Pos.TOP_CENTER);
@@ -202,7 +206,8 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
         postCombatLabel = new Label("Placeholder Text");
 
-        Button continueButton = new Button("Continue");
+        continueButton = new Button("Continue");
+        continueButton.setOnAction(this);
 
         postCombatGridPane.add(postCombatLabel,0,0);
         postCombatGridPane.add(continueButton,0,1);
@@ -211,6 +216,23 @@ public class Game extends Application implements EventHandler<ActionEvent>
         postCombatScene.getStylesheets().add("Style.css");
 
 
+    }
+
+    private void setUpStatsScreen()
+    {
+        GridPane statsGridPane = new GridPane();
+        statsGridPane.setAlignment(Pos.CENTER);
+
+        statsLabel = new Label();
+
+        statsContinueButton = new Button("Continue");
+        statsContinueButton.setOnAction(this);
+
+        statsGridPane.add(statsLabel, 0, 0);
+        statsGridPane.add(statsContinueButton,0,1);
+
+        statsScene = new Scene(statsGridPane, 800, 600);
+        statsScene.getStylesheets().add("Style.css");
     }
 
     public void upgradeSceneManager(UpgradeType upgradeType)
@@ -244,6 +266,13 @@ public class Game extends Application implements EventHandler<ActionEvent>
         postCombatLabel.setText(text);
     }
 
+    private void updateStatsScreenText()
+    {
+        String labelText = String.format("%s\nMax Health: %d\nDamage Multiplier: %.2f\nAvg Weapon Damage: %d\nGold: %d",
+                player.getName(), player.getMaxhealth(), player.getDamageMultiplier(), player.getWeapon().getAverageDamage(), player.getGold());
+        statsLabel.setText(labelText);
+    }
+
     //Event handler for every button in the game
     public void handle(ActionEvent event)
     {
@@ -261,11 +290,20 @@ public class Game extends Application implements EventHandler<ActionEvent>
                 upgradeSceneManager(UpgradeType.DAMAGE);
             }
         }
-        if (event.getSource() == adventureButton)
+        if (stage.getScene() == mainMenuScene)
         {
-            monster = monsterHolder.getRandomCommonMonster();
-            updateCombatSceneText();
-            stage.setScene(combatScene);
+            if (event.getSource() == adventureButton)
+            {
+                monster = monsterHolder.getRandomCommonMonster();
+                updateCombatSceneText();
+                stage.setScene(combatScene);
+            }
+            if (event.getSource() == statsButton)
+            {
+                updateStatsScreenText();
+                stage.setScene(statsScene);
+            }
+
         }
         if (stage.getScene() == combatScene)
         {
@@ -277,6 +315,10 @@ public class Game extends Application implements EventHandler<ActionEvent>
             {
                 Combat.combatManager(player, monster, AttackType.HEAL, this, stage, postCombatScene);
             }
+        }
+        if (event.getSource() == continueButton || event.getSource() == statsContinueButton)
+        {
+            stage.setScene(mainMenuScene);
         }
     }
 }

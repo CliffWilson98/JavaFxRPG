@@ -24,7 +24,7 @@ public class Combat
     private static <T extends GameCharacter> double calculateDamage(T character)
     {
         Weapon weapon = character.getWeapon();
-        double damage = character.getDamageMultiplier() * weapon.getAverageDamage();
+        double damage = character.getDamageMultiplier() * (weapon.getMaximumDamage() - weapon.getMinimumDamage());
         double randomDamage = (Math.random() * damage) + weapon.getMinimumDamage();
         return randomDamage;
     }
@@ -35,7 +35,7 @@ public class Combat
         player.takeDamage(monsterDamage - player.getHealAmount());
     }
 
-    private static String createCombatSummary(Player player, GameCharacter monster, Game game)
+    private static String createCombatSummary(Player player, GameCharacter monster)
     {
         String combatSummary;
 
@@ -45,9 +45,9 @@ public class Combat
         }
         else
         {
-            combatSummary = String.format("You have killed the %s", monster.getName());
+            combatSummary = String.format("You have killed the %s\nYou receive %d gold", monster.getName(), monster.getGold());
         }
-        
+
         return combatSummary;
     }
 
@@ -71,6 +71,7 @@ public class Combat
                 player.setGold(player.getGold() + monster.getGold());
             }
 
+            game.updatePostCombatSceneText(createCombatSummary(player, monster));
             player.setCurrentHealth(player.getMaxhealth());
             monster.setCurrentHealth(monster.getMaxhealth());
             stage.setScene(scene);

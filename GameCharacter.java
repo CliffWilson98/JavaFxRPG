@@ -8,9 +8,10 @@ public class GameCharacter
     private int gold;
     private double damageMultiplier;
     private Weapon weapon;
+    private int xp;
 
 
-    public GameCharacter(String name, int maxHealth, Weapon weapon, int gold, double damageMultiplier)
+    public GameCharacter(String name, int maxHealth, Weapon weapon, int gold, double damageMultiplier, int xp)
     {
         this.name = name;
         this.maxHealth = maxHealth;
@@ -18,6 +19,7 @@ public class GameCharacter
 		this.weapon = weapon;
 		this.damageMultiplier = damageMultiplier;
 		this.gold = gold;
+		this.xp = xp;
     }
 
     public String getName ()
@@ -85,4 +87,13 @@ public class GameCharacter
         currentHealth -= damage;
     }
 
+    public int getXp()
+    {
+        return xp;
+    }
+
+    public void setXp(int xp)
+    {
+        this.xp = xp;
+    }
 }

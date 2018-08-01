@@ -4,12 +4,14 @@ public class Player extends GameCharacter
 
     private int statPoints;
     private int healAmount;
+    private int xpToNextLevel;
 
     public Player (String name, int maxHealth, Weapon weapon)
     {
-        super(name, maxHealth, weapon, 0, 3);
+        super(name, maxHealth, weapon, 0, 3, 0);
         statPoints = 5;
         healAmount = 10;
+        xpToNextLevel = 10;
     }
 
     public String toString ()
@@ -62,5 +64,20 @@ public class Player extends GameCharacter
     public int getHealAmount()
     {
         return healAmount;
+    }
+
+    private void levelUp()
+    {
+        statPoints ++;
+        setXp(getXp()-xpToNextLevel);
+        xpToNextLevel += 5;
+    }
+
+    public void checkForLevelUp()
+    {
+        if (getXp() > xpToNextLevel)
+        {
+            levelUp();
+        }
     }
 }

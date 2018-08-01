@@ -15,9 +15,9 @@ public class MonsterHolder
     private MonsterHolder()
     {
         commonMonsterHolder = new ArrayList<GameCharacter>();
-        commonMonster1 = new GameCharacter("Orc Grunt", 125, WeaponsHolder.getRandomCommonWeapon(), 3, 1.2);
+        commonMonster1 = new GameCharacter("Orc Grunt", 125, WeaponsHolder.getRandomCommonWeapon(), 3, 1.2, 3);
         commonMonsterHolder.add(commonMonster1);
-        commonMonster2 = new GameCharacter("Troll Peon", 100, WeaponsHolder.getRandomCommonWeapon(), 4, 1.4);
+        commonMonster2 = new GameCharacter("Troll Peon", 100, WeaponsHolder.getRandomCommonWeapon(), 4, 1.4, 3);
         commonMonsterHolder.add(commonMonster2);
     }
 
