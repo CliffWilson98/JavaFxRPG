@@ -3,12 +3,14 @@ public class Weapon
 {
 	private int minimumDamage;
 	private int maximumDamage;
+	private int price;
 	private String name;
 	
-	public Weapon (String name, int minimumDamage, int maximumDamage)
+	public Weapon (String name, int minimumDamage, int maximumDamage, int price)
 	{
 		setName(name);
 		setDamage(minimumDamage, maximumDamage);
+		this.price = price;
 	}
 	
 	public String getName ()
@@ -38,5 +40,9 @@ public class Weapon
 	}
 	
 	public int getAverageDamage (){return (maximumDamage + minimumDamage)/2;}
-	
+
+	public int getPrice ()
+	{
+		return price;
+	}
 }

@@ -10,16 +10,18 @@ public class WeaponsHolder
     private static Weapon commonWeapon1;
     private static Weapon commonWeapon2;
     private static Weapon commonWeapon3;
+    private static Weapon commonWeapon4;
 
     private WeaponsHolder()
     {
         commonWeaponsHolder = new ArrayList<Weapon>();
-        commonWeapon1 = new Weapon("Common Hammer", 4, 7);
+        commonWeapon1 = new Weapon("Common Hammer", 0, 3, 4);
         commonWeaponsHolder.add(commonWeapon1);
-        commonWeapon2 = new Weapon("Common Sword", 4, 6);
+        commonWeapon2 = new Weapon("Common Sword", 0, 2, 4);
         commonWeaponsHolder.add(commonWeapon2);
-        commonWeapon3 = new Weapon("Common Cestus", 3, 5);
+        commonWeapon3 = new Weapon("Common Cestus", 1, 2, 4);
         commonWeaponsHolder.add(commonWeapon3);
+        commonWeapon4 = new Weapon("Common Longsword", 2, 5, 8);
 
     }
 

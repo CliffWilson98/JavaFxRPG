@@ -2,5 +2,7 @@
 public enum UpgradeType
 {
     HEALTH,
-    DAMAGE
+    DAMAGE,
+    MANA,
+    MAGIC
 }
