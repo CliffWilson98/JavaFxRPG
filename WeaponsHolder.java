@@ -5,12 +5,22 @@ public class WeaponsHolder
 {
     private static WeaponsHolder instance = new WeaponsHolder();
 
-    private static ArrayList<Weapon> commonWeaponsHolder;
+    private  ArrayList<Weapon> commonWeaponsHolder;
 
-    private static Weapon commonWeapon1;
-    private static Weapon commonWeapon2;
-    private static Weapon commonWeapon3;
-    private static Weapon commonWeapon4;
+    private  Weapon commonWeapon1;
+    private  Weapon commonWeapon2;
+    private  Weapon commonWeapon3;
+    private  Weapon commonWeapon4;
+    private  Weapon commonWeapon5;
+
+    private  ArrayList<Weapon> uncommonWeaponsHolder;
+
+    private  Weapon uncommonWeapon1;
+    private  Weapon uncommonWeapon2;
+    private  Weapon uncommonWeapon3;
+    private  Weapon uncommonWeapon4;
+    private  Weapon uncommonWeapon5;
+
 
     private WeaponsHolder()
     {
@@ -22,19 +32,41 @@ public class WeaponsHolder
         commonWeapon3 = new Weapon("Common Cestus", 1, 2, 4);
         commonWeaponsHolder.add(commonWeapon3);
         commonWeapon4 = new Weapon("Common Longsword", 2, 5, 8);
+        commonWeaponsHolder.add(commonWeapon4);
+        commonWeapon5 = new Weapon("Common Spear", 2, 4, 6);
+        commonWeaponsHolder.add(commonWeapon5);
 
+        uncommonWeaponsHolder = new ArrayList<Weapon>();
+        uncommonWeapon1 = new Weapon("Uncommon Hammer", 4, 8, 20);
+        uncommonWeaponsHolder.add(uncommonWeapon1);
+        uncommonWeapon2 = new Weapon("Uncommon Sword", 3, 9, 18);
+        uncommonWeaponsHolder.add(uncommonWeapon2);
     }
 
-    public static WeaponsHolder getInstance ()
+    public static WeaponsHolder getInstance()
     {
         return instance;
     }
 
-    public static Weapon getRandomCommonWeapon ()
+    public Weapon getRandomCommonWeapon()
     {
         int randomNumber = (int)(Math.random() * (commonWeaponsHolder.size()));
         return commonWeaponsHolder.get(randomNumber);
     }
 
+    public Weapon getRandomUncommonWeapon()
+    {
+        int randomNumber = (int)(Math.random() * (uncommonWeaponsHolder.size()));
+        return uncommonWeaponsHolder.get(randomNumber);
+    }
 
+    public ArrayList<Weapon> getCommonWeaponsHolder()
+    {
+        return commonWeaponsHolder;
+    }
+
+    public ArrayList<Weapon> getUncommonWeaponsHolder()
+    {
+        return uncommonWeaponsHolder;
+    }
 }

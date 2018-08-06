@@ -6,22 +6,23 @@ public class MonsterHolder
 {
 
     private static MonsterHolder instance = new MonsterHolder();
+    private WeaponsHolder weaponsHolder = WeaponsHolder.getInstance();
 
-    private static ArrayList<GameCharacter> commonMonsterHolder;
+    private ArrayList<GameCharacter> commonMonsterHolder;
 
-    private static GameCharacter commonMonster1;
-    private static GameCharacter commonMonster2;
+    private GameCharacter commonMonster1;
+    private  GameCharacter commonMonster2;
 
     private MonsterHolder()
     {
         commonMonsterHolder = new ArrayList<GameCharacter>();
-        commonMonster1 = new GameCharacter("Orc Grunt", 8, WeaponsHolder.getRandomCommonWeapon(), 3, 1.2, 3);
+        commonMonster1 = new GameCharacter("Orc Grunt", 8, weaponsHolder.getRandomCommonWeapon(), 3, 1.2, 3);
         commonMonsterHolder.add(commonMonster1);
-        commonMonster2 = new GameCharacter("Troll Peon", 12, WeaponsHolder.getRandomCommonWeapon(), 4, .8, 3);
+        commonMonster2 = new GameCharacter("Troll Peon", 12, weaponsHolder.getRandomCommonWeapon(), 4, .8, 3);
         commonMonsterHolder.add(commonMonster2);
     }
 
-    public static GameCharacter getRandomCommonMonster ()
+    public GameCharacter getRandomCommonMonster ()
     {
         int randomNumber = (int)(Math.random() * (commonMonsterHolder.size()));
         return commonMonsterHolder.get(randomNumber);
@@ -32,4 +33,8 @@ public class MonsterHolder
         return instance;
     }
 
+    public ArrayList<GameCharacter> getCommonMonsterHolder()
+    {
+        return commonMonsterHolder;
+    }
 }

@@ -6,8 +6,14 @@ public class Combat
     //Creating private constructor for this class
     private Combat (){}
 
+    private static Combat instance = new Combat();
+
+    public static Combat getInstance()
+    {
+        return instance;
+    }
     //Private helper methods to be ran in the combatManager()
-    private static void attack (Player player, GameCharacter monster)
+    private  void attack (Player player, GameCharacter monster)
     {
         int monsterDamage = calculateDamage(monster);
         int playerDamage = calculateDamage(player);
@@ -21,7 +27,7 @@ public class Combat
 
     }
 
-    private static <T extends GameCharacter> int calculateDamage(T character)
+    private  <T extends GameCharacter> int calculateDamage(T character)
     {
         Weapon weapon = character.getWeapon();
         double damage = character.getDamageMultiplier() * (weapon.getMaximumDamage() - weapon.getMinimumDamage());
@@ -29,7 +35,7 @@ public class Combat
         return randomDamage;
     }
 
-    private static void heal (Player player, GameCharacter monster)
+    private  void heal (Player player, GameCharacter monster)
     {
         int monsterDamage = calculateDamage(monster);
         player.takeDamage(monsterDamage - player.getHealAmount());
@@ -39,7 +45,7 @@ public class Combat
         }
     }
 
-    private static void castSpell(Player player, GameCharacter monster)
+    private  void castSpell(Player player, GameCharacter monster)
     {
         monster.takeDamage(player.getMagicDamage());
         player.setCurrentMana(player.getCurrentMana() - 1);
@@ -50,7 +56,7 @@ public class Combat
         }
     }
 
-    private static String createCombatSummary(Player player, GameCharacter monster)
+    private  String createCombatSummary(Player player, GameCharacter monster)
     {
         String combatSummary;
 
@@ -71,7 +77,7 @@ public class Combat
     }
 
     //Primary method for combat. It invokes all necessary helper methods to manage the combat scenario.
-    public static void combatManager (Player player, GameCharacter monster, AttackType type, Game game, Stage stage, Scene scene)
+    public  void combatManager (Player player, GameCharacter monster, AttackType type, Game game, Stage stage, Scene scene)
     {
         boolean combatIsOver = false;
 
@@ -104,10 +110,16 @@ public class Combat
             }
 
             game.updatePostCombatSceneText(createCombatSummary(player, monster));
-            player.setCurrentHealth(player.getMaxhealth());
+            regeneratePlayer(player);
             monster.setCurrentHealth(monster.getMaxhealth());
             stage.setScene(scene);
         }
+    }
+
+    private void regeneratePlayer(Player player)
+    {
+        player.setCurrentHealth(player.getMaxhealth());
+        player.setCurrentMana(player.getMaxMana());
     }
 
 

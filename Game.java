@@ -11,16 +11,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-/*
-TODO: fix WeaponsHolder and Combat so they properly employ the singleton design pattern
- */
+
 public class Game extends Application implements EventHandler<ActionEvent>
 {
     private Player player;
     private GameCharacter monster;
     private WeaponsHolder weaponsHolder = WeaponsHolder.getInstance();
     private MonsterHolder monsterHolder = MonsterHolder.getInstance();
+    private ZoneDatabase zoneDatabase = ZoneDatabase.getInstance();
+    private Zone currentZone;
     private Shop shop = Shop.getInstance();
+    private Combat combat = Combat.getInstance();
 
     private Font labelFont = new Font("Times New Roman", 32);
 
@@ -51,6 +52,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
     {
         player = new Player("Brave Hero", 10, weaponsHolder.getRandomCommonWeapon());
         monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0, 0);
+        currentZone = zoneDatabase.getStartingZone();
 
         stage = primaryStage;
         stage.setResizable(true);
@@ -256,7 +258,9 @@ public class Game extends Application implements EventHandler<ActionEvent>
         shopLabel = new Label("PlaceHolder");
 
         shopButton1 = new Button("Item 1");
+        shopButton1.setOnAction(this);
         shopButton2 = new Button("Item 2");
+        shopButton2.setOnAction(this);
         shopButton3 = new Button("Item 3");
         shopButton4 = new Button("Item 4");
         leaveShopButton = new Button ("Leave Shop");
@@ -304,8 +308,8 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
     public void updateCombatSceneText()
     {
-        String labelText = String.format("%s\nHP: %d\nAVG-DMG: %.1f\nMANA: %d\nMAGIC-DMG: %d", player.getName(), player.getCurrentHealth(),
-                (player.getDamageMultiplier() * player.getWeapon().getAverageDamage()), player.getCurrentMana(), player.getMagicDamage());
+        String labelText = String.format("%s\nHP: %d\nAVG-DMG: %.1f\nMAGIC-DMG: %d\nMANA: %d", player.getName(), player.getCurrentHealth(),
+                (player.getDamageMultiplier() * player.getWeapon().getAverageDamage()), player.getMagicDamage(), player.getCurrentMana());
         playerAttackLabel.setText(labelText);
         labelText = String.format("%s\nHP: %d\nAVG-DMG: %.1f", monster.getName(), monster.getCurrentHealth(), (monster.getDamageMultiplier() * monster.getWeapon().getAverageDamage()));
         enemyAttackLabel.setText(labelText);
@@ -318,9 +322,9 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
     private void updateStatsScreenText()
     {
-        String labelText = String.format("%s\nLevel: %d\nMax Health: %d\nDamage Multiplier: %.2f\nWeapon: %s\nAvg Weapon Damage: %d\nGold: %d\nXP: %d/%d",
+        String labelText = String.format("%s\nLevel: %d\nMax Health: %d\nDamage Multiplier: %.2f\nWeapon: %s\nAvg Weapon Damage: %d\nMagic Damage: %d\nMana: %d\nGold: %d\nXP: %d/%d",
                 player.getName(), player.getLevel(), player.getMaxhealth(), player.getDamageMultiplier(),
-                player.getWeapon().getName(), player.getWeapon().getAverageDamage(), player.getGold(), player.getXp(), player.getXpToNextLevel());
+                player.getWeapon().getName(), player.getWeapon().getAverageDamage(),player.getMagicDamage(), player.getMaxMana(), player.getGold(), player.getXp(), player.getXpToNextLevel());
         statsLabel.setText(labelText);
     }
 
@@ -373,19 +377,19 @@ public class Game extends Application implements EventHandler<ActionEvent>
         {
             if (event.getSource() == attackButton)
             {
-                Combat.combatManager(player, monster, AttackType.ATTACK, this, stage, postCombatScene);
+                combat.combatManager(player, monster, AttackType.ATTACK, this, stage, postCombatScene);
             }
             if (event.getSource() == healButton)
             {
-                Combat.combatManager(player, monster, AttackType.HEAL, this, stage, postCombatScene);
+                combat.combatManager(player, monster, AttackType.HEAL, this, stage, postCombatScene);
             }
             if (event.getSource() == fleeButton)
             {
-                Combat.combatManager(player, monster, AttackType.FLEE, this, stage, postCombatScene);
+                combat.combatManager(player, monster, AttackType.FLEE, this, stage, postCombatScene);
             }
             if (event.getSource() == magicButton)
             {
-                Combat.combatManager(player, monster, AttackType.MAGIC, this, stage, postCombatScene);
+                combat.combatManager(player, monster, AttackType.MAGIC, this, stage, postCombatScene);
             }
         }
         if (event.getSource() == continueButton || event.getSource() == statsContinueButton)
@@ -405,6 +409,22 @@ public class Game extends Application implements EventHandler<ActionEvent>
             if (event.getSource() == leaveShopButton)
             {
                 stage.setScene(mainMenuScene);
+            }
+            else if (event.getSource() == shopButton1)
+            {
+                shop.purchaseManager(player,1);
+            }
+            else if (event.getSource() == shopButton2)
+            {
+                shop.purchaseManager(player,2);
+            }
+            else if (event.getSource() == shopButton3)
+            {
+
+            }
+            else if (event.getSource() == shopButton4)
+            {
+
             }
         }
     }
