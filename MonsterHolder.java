@@ -9,9 +9,19 @@ public class MonsterHolder
     private WeaponsHolder weaponsHolder = WeaponsHolder.getInstance();
 
     private ArrayList<GameCharacter> commonMonsterHolder;
+    private ArrayList<GameCharacter> uncommonMonsterHolder;
 
     private GameCharacter commonMonster1;
     private  GameCharacter commonMonster2;
+    private GameCharacter commonMonster3;
+    private GameCharacter commonMonster4;
+    private GameCharacter commonMonster5;
+
+    private GameCharacter uncommonMonster1;
+    private GameCharacter uncommonMonster2;
+    private GameCharacter uncommonMonster3;
+    private GameCharacter uncommonMonster4;
+    private GameCharacter uncommonMonster5;
 
     private MonsterHolder()
     {
@@ -20,6 +30,19 @@ public class MonsterHolder
         commonMonsterHolder.add(commonMonster1);
         commonMonster2 = new GameCharacter("Troll Peon", 12, weaponsHolder.getRandomCommonWeapon(), 4, .8, 3);
         commonMonsterHolder.add(commonMonster2);
+        commonMonster3 = new GameCharacter("Amateur Thief", 15, weaponsHolder.getRandomCommonWeapon(), 8, 1.4, 5);
+        commonMonsterHolder.add(commonMonster3);
+        commonMonster4 = new GameCharacter("Feral Bat", 10, weaponsHolder.getRandomCommonWeapon(), 5, 1, 4);
+        commonMonsterHolder.add(commonMonster4);
+        commonMonster5 = new GameCharacter("Undead Gravedigger", 12, weaponsHolder.getRandomCommonWeapon(), 6, 1.5, 6);
+        commonMonsterHolder.add(commonMonster5);
+
+        uncommonMonsterHolder =  new ArrayList<GameCharacter>();
+        uncommonMonster1 = new GameCharacter("Orc Chief", 40, weaponsHolder.getRandomUncommonWeapon(), 20, 3, 20);
+        uncommonMonsterHolder.add(uncommonMonster1);
+        uncommonMonster2 = new GameCharacter("Troll Solider", 50, weaponsHolder.getRandomUncommonWeapon(), 24, 2.4, 22);
+        uncommonMonsterHolder.add(uncommonMonster2);
+
     }
 
     public GameCharacter getRandomCommonMonster ()
@@ -36,5 +59,10 @@ public class MonsterHolder
     public ArrayList<GameCharacter> getCommonMonsterHolder()
     {
         return commonMonsterHolder;
+    }
+
+    public ArrayList<GameCharacter> getUncommonMonsterHolder()
+    {
+        return uncommonMonsterHolder;
     }
 }

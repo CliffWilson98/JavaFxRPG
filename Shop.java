@@ -2,7 +2,7 @@ import javafx.scene.control.Label;
 
 public class Shop
 {
-    private WeaponsHolder shopWeaponsHolder;
+    private Zone currentZone;
     private Weapon shopWeapon1;
     private Weapon shopWeapon2;
 
@@ -15,15 +15,18 @@ public class Shop
 
     private Shop ()
     {
-        shopWeaponsHolder = WeaponsHolder.getInstance();
-        shopWeapon1 = shopWeaponsHolder.getRandomCommonWeapon();
-        shopWeapon2 = shopWeaponsHolder.getRandomUncommonWeapon();
+        updateShop();
     }
 
     public void updateShop()
     {
-        shopWeapon1 = shopWeaponsHolder.getRandomCommonWeapon();
-        shopWeapon2 = shopWeaponsHolder.getRandomUncommonWeapon();
+        currentZone = Game.getCurrentZone();
+        shopWeapon1 = currentZone.getRandomWeapon();
+        shopWeapon2 = currentZone.getRandomWeapon();
+        while (shopWeapon2 == shopWeapon1)
+        {
+            shopWeapon2 = currentZone.getRandomWeapon();
+        }
     }
 
     public void updateShopText(Label label)

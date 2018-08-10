@@ -31,16 +31,21 @@ public class WeaponsHolder
         commonWeaponsHolder.add(commonWeapon2);
         commonWeapon3 = new Weapon("Common Cestus", 1, 2, 4);
         commonWeaponsHolder.add(commonWeapon3);
-        commonWeapon4 = new Weapon("Common Longsword", 2, 5, 8);
+        commonWeapon4 = new Weapon("Common Longsword", 0, 4, 10);
         commonWeaponsHolder.add(commonWeapon4);
-        commonWeapon5 = new Weapon("Common Spear", 2, 4, 6);
+        commonWeapon5 = new Weapon("Common Spear", 0, 4, 10);
         commonWeaponsHolder.add(commonWeapon5);
 
         uncommonWeaponsHolder = new ArrayList<Weapon>();
-        uncommonWeapon1 = new Weapon("Uncommon Hammer", 4, 8, 20);
+        uncommonWeapon1 = new Weapon("Uncommon Hammer", 4, 8, 65);
         uncommonWeaponsHolder.add(uncommonWeapon1);
-        uncommonWeapon2 = new Weapon("Uncommon Sword", 3, 9, 18);
+        uncommonWeapon2 = new Weapon("Uncommon Sword", 4, 9, 65);
         uncommonWeaponsHolder.add(uncommonWeapon2);
+        uncommonWeapon3 = new Weapon("Uncommon Spear", 5, 10, 70);
+        uncommonWeaponsHolder.add(uncommonWeapon3);
+        uncommonWeapon4 = new Weapon("Uncommon Cestus", 3, 11, 65);
+        uncommonWeaponsHolder.add(uncommonWeapon4);
+        uncommonWeapon5 = new Weapon("Lloyd's Mallet", 7, 13, 125 );
     }
 
     public static WeaponsHolder getInstance()
@@ -52,6 +57,11 @@ public class WeaponsHolder
     {
         int randomNumber = (int)(Math.random() * (commonWeaponsHolder.size()));
         return commonWeaponsHolder.get(randomNumber);
+    }
+
+    public Weapon getStartingWeapon()
+    {
+        return commonWeapon2;
     }
 
     public Weapon getRandomUncommonWeapon()

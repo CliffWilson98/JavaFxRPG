@@ -17,9 +17,9 @@ public class Game extends Application implements EventHandler<ActionEvent>
     private Player player;
     private GameCharacter monster;
     private WeaponsHolder weaponsHolder = WeaponsHolder.getInstance();
-    private MonsterHolder monsterHolder = MonsterHolder.getInstance();
-    private ZoneDatabase zoneDatabase = ZoneDatabase.getInstance();
-    private Zone currentZone;
+    //private MonsterHolder monsterHolder = MonsterHolder.getInstance();
+    private static ZoneDatabase zoneDatabase = ZoneDatabase.getInstance();
+    private static Zone currentZone = zoneDatabase.getZoneAtIndex(0);
     private Shop shop = Shop.getInstance();
     private Combat combat = Combat.getInstance();
 
@@ -29,7 +29,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
     private GridPane titleGridpane, mainMenuGridPane, upgradeGridPane, combatGridPane, postCombatGridPane;
 
-    private Scene titleScene, mainMenuScene, upgradeScene, combatScene, postCombatScene, statsScene, shopScene;
+    private Scene titleScene, mainMenuScene, upgradeScene, combatScene, postCombatScene, statsScene, shopScene, zoneScene;
 
     private Button startButton;
     private Button healthUpgradeButton, damageUpgradeButton, magicUpgradeButton, manaUpgradeButton;
@@ -38,8 +38,9 @@ public class Game extends Application implements EventHandler<ActionEvent>
     private Button continueButton;
     private Button statsContinueButton;
     private Button shopButton1, shopButton2, shopButton3, shopButton4, leaveShopButton;
+    private Button zoneButton1, zoneButton2, zoneButton3, zoneButton4;
 
-    private Label upgradeLabel, playerAttackLabel, enemyAttackLabel, postCombatLabel, statsLabel, shopLabel;
+    private Label upgradeLabel, playerAttackLabel, enemyAttackLabel, postCombatLabel, statsLabel, shopLabel, mainMenuLabel;
 
     public static void main(String[] args)
     {
@@ -50,9 +51,9 @@ public class Game extends Application implements EventHandler<ActionEvent>
     //Initializing all necessary components for the game
     public void start(Stage primaryStage)
     {
-        player = new Player("Brave Hero", 10, weaponsHolder.getRandomCommonWeapon());
-        monster = new GameCharacter("Placeholder", 0, weaponsHolder.getRandomCommonWeapon(), 0, 0, 0);
-        currentZone = zoneDatabase.getStartingZone();
+        player = new Player("Brave Hero", 10, weaponsHolder.getStartingWeapon());
+        monster = new GameCharacter("Placeholder", 0, weaponsHolder.getStartingWeapon(), 0, 0, 0);
+        currentZone = zoneDatabase.getZoneAtIndex(0);
 
         stage = primaryStage;
         stage.setResizable(true);
@@ -65,6 +66,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
         setUpPostCombatScreen();
         setUpStatsScreen();
         setUpShopScreen();
+        setUpChangeZoneScreen();
 
         stage.setScene(titleScene);
 
@@ -100,8 +102,8 @@ public class Game extends Application implements EventHandler<ActionEvent>
         mainMenuGridPane.setVgap(100);
         mainMenuGridPane.setAlignment(Pos.TOP_CENTER);
 
-        String mainMenuText = "You are resting at a campfire. What do you wish to do?";
-        Label mainMenuLabel = new Label(mainMenuText);
+        mainMenuLabel = new Label();
+        updateMainMenuText();
         mainMenuLabel.setWrapText(true);
         mainMenuLabel.setFont(labelFont);
 
@@ -119,6 +121,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
         statsButton = new Button("View Stats");
         statsButton.setOnAction(this);
         zoneChangeButton = new Button("Change Zone");
+        zoneChangeButton.setOnAction(this);
 
         mainMenuButtonPane.add(adventureButton,0,0);
         mainMenuButtonPane.add(shopButton,1,0);
@@ -284,8 +287,37 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
         shopScene = new Scene(shopPane, 800, 600);
         shopScene.getStylesheets().add("Style.css");
+    }
 
+    private void setUpChangeZoneScreen()
+    {
+        GridPane zonePane = new GridPane();
+        zonePane.setAlignment(Pos.CENTER);
 
+        Label zoneLabel = new Label("Choose which zone you wish to travel to.");
+
+        GridPane buttonPane = new GridPane();
+        buttonPane.setAlignment(Pos.CENTER);
+
+        zoneButton1 = new Button("Starting Zone");
+        zoneButton1.setOnAction(this);
+        zoneButton2 = new Button("Intermediate Zone");
+        zoneButton2.setOnAction(this);
+        zoneButton3 = new Button("Hard Zone");
+        zoneButton3.setOnAction(this);
+        zoneButton4 = new Button("Return to Main Menu");
+        zoneButton4.setOnAction(this);
+
+        buttonPane.add(zoneButton1,0,0);
+        buttonPane.add(zoneButton2,0,1);
+        buttonPane.add(zoneButton3,0,2);
+        buttonPane.add(zoneButton4,0,3);
+
+        zonePane.add(zoneLabel, 0 ,0);
+        zonePane.add(buttonPane,0,1);
+
+        zoneScene = new Scene(zonePane, 800, 600);
+        zoneScene.getStylesheets().add("Style.css");
     }
 
     public void upgradeSceneManager(UpgradeType upgradeType)
@@ -299,6 +331,12 @@ public class Game extends Application implements EventHandler<ActionEvent>
     }
 
     //Methods to update text after a change has been made
+    private void updateMainMenuText()
+    {
+        String labelText = currentZone.getDescription();
+        mainMenuLabel.setText(labelText);
+
+    }
     private void updateUpgradeSceneText()
     {
         String upgradeText = String.format("UPGRADE YOUR HERO\nPlayer Name: %s\nHealth: %d\nDamage Multiplier: %.1f\nMagic Damage: %d\nMana: %d\nPoints Remaining: %d",
@@ -326,6 +364,11 @@ public class Game extends Application implements EventHandler<ActionEvent>
                 player.getName(), player.getLevel(), player.getMaxhealth(), player.getDamageMultiplier(),
                 player.getWeapon().getName(), player.getWeapon().getAverageDamage(),player.getMagicDamage(), player.getMaxMana(), player.getGold(), player.getXp(), player.getXpToNextLevel());
         statsLabel.setText(labelText);
+    }
+
+    public static Zone getCurrentZone()
+    {
+        return currentZone;
     }
 
     //Event handler for every button in the game
@@ -357,7 +400,7 @@ public class Game extends Application implements EventHandler<ActionEvent>
         {
             if (event.getSource() == adventureButton)
             {
-                monster = monsterHolder.getRandomCommonMonster();
+                monster = currentZone.getRandomEnemy();
                 updateCombatSceneText();
                 stage.setScene(combatScene);
             }
@@ -370,6 +413,11 @@ public class Game extends Application implements EventHandler<ActionEvent>
             {
                 shop.updateShopText(shopLabel);
                 stage.setScene(shopScene);
+            }
+            if (event.getSource() == zoneChangeButton)
+            {
+                //System.out.println("Zone pressed");
+                stage.setScene(zoneScene);
             }
 
         }
@@ -425,6 +473,28 @@ public class Game extends Application implements EventHandler<ActionEvent>
             else if (event.getSource() == shopButton4)
             {
 
+            }
+        }
+
+        if (stage.getScene() == zoneScene)
+        {
+            if (event.getSource() == zoneButton1)
+            {
+                currentZone = zoneDatabase.getZoneAtIndex(0);
+                updateMainMenuText();
+                shop.updateShop();
+                stage.setScene(mainMenuScene);
+            }
+            if (event.getSource() == zoneButton2)
+            {
+                currentZone = zoneDatabase.getZoneAtIndex(1);
+                updateMainMenuText();
+                shop.updateShop();
+                stage.setScene(mainMenuScene);
+            }
+            if (event.getSource() == zoneButton4)
+            {
+                stage.setScene(mainMenuScene);
             }
         }
     }
