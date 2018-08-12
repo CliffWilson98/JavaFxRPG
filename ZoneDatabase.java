@@ -19,7 +19,8 @@ public class ZoneDatabase
         gameZones.add(startingZone);
         intermediateZone = new Zone("Intermediate Zone", "This zone is more challenging than the first", weaponsHolder.getUncommonWeaponsHolder(), monsterHolder.getUncommonMonsterHolder());
         gameZones.add(intermediateZone);
-
+        hardZone = new Zone("Hard Zone", "This is a high level zone. You must be well equipped to adventure here.", weaponsHolder.getGoodWeaponsHolder(), monsterHolder.getGoodMonsterHolder());
+        gameZones.add(hardZone);
     }
 
     public Zone getStartingZone()

@@ -492,6 +492,13 @@ public class Game extends Application implements EventHandler<ActionEvent>
                 shop.updateShop();
                 stage.setScene(mainMenuScene);
             }
+            if (event.getSource() == zoneButton3)
+            {
+                currentZone = zoneDatabase.getZoneAtIndex(2);
+                updateMainMenuText();
+                shop.updateShop();
+                stage.setScene(mainMenuScene);
+            }
             if (event.getSource() == zoneButton4)
             {
                 stage.setScene(mainMenuScene);

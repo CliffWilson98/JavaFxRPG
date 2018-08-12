@@ -1,3 +1,4 @@
+import java.sql.Array;
 import java.util.ArrayList;
 
 //Class which holds every weapon in the game. Identical in concept to the MonsterHolder class
@@ -21,6 +22,13 @@ public class WeaponsHolder
     private  Weapon uncommonWeapon4;
     private  Weapon uncommonWeapon5;
 
+    private ArrayList<Weapon> goodWeaponsHolder;
+
+    private Weapon goodWeapon1;
+    private Weapon goodWeapon2;
+    private Weapon goodWeapon3;
+    private Weapon goodWeapon4;
+    private Weapon goodWeapon5;
 
     private WeaponsHolder()
     {
@@ -46,6 +54,15 @@ public class WeaponsHolder
         uncommonWeapon4 = new Weapon("Uncommon Cestus", 3, 11, 65);
         uncommonWeaponsHolder.add(uncommonWeapon4);
         uncommonWeapon5 = new Weapon("Lloyd's Mallet", 7, 13, 125 );
+        uncommonWeaponsHolder.add(uncommonWeapon5);
+
+        goodWeaponsHolder = new ArrayList<Weapon>();
+        goodWeapon1 = new Weapon("Arthur's Hammer", 20, 30, 600);
+        goodWeaponsHolder.add(goodWeapon1);
+        goodWeapon2 = new Weapon("Vladimir's Spear", 22, 29, 595);
+        goodWeaponsHolder.add(goodWeapon2);
+        goodWeapon3 = new Weapon("Gregor's Greatsword", 30, 50, 1000);
+        goodWeaponsHolder.add(goodWeapon3);
     }
 
     public static WeaponsHolder getInstance()
@@ -78,5 +95,16 @@ public class WeaponsHolder
     public ArrayList<Weapon> getUncommonWeaponsHolder()
     {
         return uncommonWeaponsHolder;
+    }
+
+    public ArrayList<Weapon> getGoodWeaponsHolder()
+    {
+        return goodWeaponsHolder;
+    }
+
+    public Weapon getRandomGoodWeapon()
+    {
+        int randomNumber = (int)(Math.random() * (goodWeaponsHolder.size()));
+        return goodWeaponsHolder.get(randomNumber);
     }
 }

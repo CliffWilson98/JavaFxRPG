@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 //Class which holds every monster in the game. The different monster tiers can be accessed
@@ -10,6 +11,7 @@ public class MonsterHolder
 
     private ArrayList<GameCharacter> commonMonsterHolder;
     private ArrayList<GameCharacter> uncommonMonsterHolder;
+    private ArrayList<GameCharacter> goodMonsterHolder;
 
     private GameCharacter commonMonster1;
     private  GameCharacter commonMonster2;
@@ -22,6 +24,12 @@ public class MonsterHolder
     private GameCharacter uncommonMonster3;
     private GameCharacter uncommonMonster4;
     private GameCharacter uncommonMonster5;
+
+    private GameCharacter goodMonster1;
+    private GameCharacter goodMonster2;
+    private GameCharacter goodMonster3;
+    private GameCharacter goodMonster4;
+    private GameCharacter goodMonster5;
 
     private MonsterHolder()
     {
@@ -42,6 +50,10 @@ public class MonsterHolder
         uncommonMonsterHolder.add(uncommonMonster1);
         uncommonMonster2 = new GameCharacter("Troll Solider", 50, weaponsHolder.getRandomUncommonWeapon(), 24, 2.4, 22);
         uncommonMonsterHolder.add(uncommonMonster2);
+
+        goodMonsterHolder = new ArrayList<GameCharacter>();
+        goodMonster1 = new GameCharacter("Orc Captain" , 400, weaponsHolder.getRandomGoodWeapon(), 87, 4, 80);
+        goodMonsterHolder.add(goodMonster1);
 
     }
 
@@ -64,5 +76,10 @@ public class MonsterHolder
     public ArrayList<GameCharacter> getUncommonMonsterHolder()
     {
         return uncommonMonsterHolder;
+    }
+
+    public ArrayList<GameCharacter> getGoodMonsterHolder()
+    {
+        return goodMonsterHolder;
     }
 }

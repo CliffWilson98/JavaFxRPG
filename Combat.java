@@ -30,8 +30,12 @@ public class Combat
     private  <T extends GameCharacter> int calculateDamage(T character)
     {
         Weapon weapon = character.getWeapon();
-        double damage = character.getDamageMultiplier() * (weapon.getMaximumDamage() - weapon.getMinimumDamage());
-        int randomDamage = (int)((Math.random() * damage) + weapon.getMinimumDamage());
+        double damage = character.getDamageMultiplier() * weapon.getMaximumDamage();
+        int randomDamage = (int)(Math.random() * damage);
+        if (randomDamage < weapon.getMinimumDamage())
+        {
+            randomDamage = weapon.getMinimumDamage();
+        }
         return randomDamage;
     }
 
