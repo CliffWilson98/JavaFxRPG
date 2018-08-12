@@ -2,9 +2,14 @@
 .button{
     -fx-font: 20px "Times New Roman";
     -fx-padding: 10;
+    -fx-pref-width: 200;
 }
 
 .label{
      -fx-font: 26px "Times New Roman";
      -fx-padding: 10;
+}
+
+.root{
+     -fx-background: rgb(225, 228, 203);
 }

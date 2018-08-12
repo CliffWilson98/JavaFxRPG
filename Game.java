@@ -115,12 +115,16 @@ public class Game extends Application implements EventHandler<ActionEvent>
         mainMenuButtonPane.setAlignment(Pos.CENTER);
 
         adventureButton = new Button("Adventure");
+        adventureButton.setPrefWidth(150);
         adventureButton.setOnAction(this);
         shopButton = new Button("Shop");
+        shopButton.setPrefWidth(150);
         shopButton.setOnAction(this);
         statsButton = new Button("View Stats");
+        statsButton.setPrefWidth(150);
         statsButton.setOnAction(this);
         zoneChangeButton = new Button("Change Zone");
+        zoneChangeButton.setPrefWidth(150);
         zoneChangeButton.setOnAction(this);
 
         mainMenuButtonPane.add(adventureButton,0,0);
@@ -274,8 +278,8 @@ public class Game extends Application implements EventHandler<ActionEvent>
 
         buttonPane.add(shopButton1, 0 ,0);
         buttonPane.add(shopButton2, 1,0);
-        buttonPane.add(shopButton3, 0,1);
-        buttonPane.add(shopButton4, 1 ,1);
+        //buttonPane.add(shopButton3, 0,1);
+        //buttonPane.add(shopButton4, 1 ,1);
 
         GridPane leavePane = new GridPane();
         leavePane.setAlignment(Pos.CENTER);
