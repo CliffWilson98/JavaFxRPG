@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -115,16 +116,12 @@ public class Game extends Application implements EventHandler<ActionEvent>
         mainMenuButtonPane.setAlignment(Pos.CENTER);
 
         adventureButton = new Button("Adventure");
-        adventureButton.setPrefWidth(150);
         adventureButton.setOnAction(this);
         shopButton = new Button("Shop");
-        shopButton.setPrefWidth(150);
         shopButton.setOnAction(this);
         statsButton = new Button("View Stats");
-        statsButton.setPrefWidth(150);
         statsButton.setOnAction(this);
         zoneChangeButton = new Button("Change Zone");
-        zoneChangeButton.setPrefWidth(150);
         zoneChangeButton.setOnAction(this);
 
         mainMenuButtonPane.add(adventureButton,0,0);
@@ -223,37 +220,43 @@ public class Game extends Application implements EventHandler<ActionEvent>
     //Screen to provide a summary of all combat encounters
     private void setUpPostCombatScreen()
     {
-        postCombatGridPane = new GridPane();
-        postCombatGridPane.setAlignment(Pos.CENTER);
-
         postCombatLabel = new Label("Placeholder Text");
 
         continueButton = new Button("Continue");
         continueButton.setOnAction(this);
 
-        postCombatGridPane.add(postCombatLabel,0,0);
-        postCombatGridPane.add(continueButton,0,1);
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(8);
 
-        postCombatScene = new Scene(postCombatGridPane, 800, 600);
+        vbox.getChildren().add(postCombatLabel);
+        vbox.getChildren().add(continueButton);
+
+        postCombatScene = new Scene(vbox, 800, 600);
         postCombatScene.getStylesheets().add("Style.css");
-
-
     }
 
     private void setUpStatsScreen()
     {
-        GridPane statsGridPane = new GridPane();
-        statsGridPane.setAlignment(Pos.CENTER);
+        /*GridPane statsGridPane = new GridPane();
+        statsGridPane.setAlignment(Pos.CENTER);*/
+
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
 
         statsLabel = new Label();
 
         statsContinueButton = new Button("Continue");
         statsContinueButton.setOnAction(this);
 
-        statsGridPane.add(statsLabel, 0, 0);
-        statsGridPane.add(statsContinueButton,0,1);
+        vbox.getChildren().add(statsLabel);
+        vbox.getChildren().add(statsContinueButton);
 
-        statsScene = new Scene(statsGridPane, 800, 600);
+        //statsGridPane.add(statsLabel, 0, 0);
+        //statsGridPane.add(statsContinueButton,0,1);
+
+        statsScene = new Scene(vbox, 800, 600);
         statsScene.getStylesheets().add("Style.css");
     }
 
